@@ -448,6 +448,7 @@ static KeyboardGroup *kb_group;
 static unsigned int cursor_mode;
 static Client *grabc;
 static int grabcx, grabcy; /* client-relative */
+static int rzcorner;
 
 static struct wlr_output_layout *output_layout;
 static struct wlr_box sgeom;
@@ -2210,8 +2211,23 @@ motionnotify(uint32_t time, struct wlr_input_device *device, double dx, double d
 			.width = grabc->geom.width, .height = grabc->geom.height}, 1);
 		return;
 	} else if (cursor_mode == CurResize) {
-		resize(grabc, (struct wlr_box){.x = grabc->geom.x, .y = grabc->geom.y,
-			.width = (int)round(cursor->x) - grabc->geom.x, .height = (int)round(cursor->y) - grabc->geom.y}, 1);
+		int cdx = (int)round(cursor->x) - grabcx;
+		int cdy = (int)round(cursor->y) - grabcy;
+
+		cdx = !(rzcorner & 1) && grabc->geom.width - 2 * (int)grabc->bw - cdx < 1 ? 0 : cdx;
+		cdy = !(rzcorner & 2) && grabc->geom.height - 2 * (int)grabc->bw - cdy < 1 ? 0 : cdy;
+
+		const struct wlr_box box = {
+			.x      = grabc->geom.x      + (rzcorner & 1 ? 0   :  cdx),
+			.y      = grabc->geom.y      + (rzcorner & 2 ? 0   :  cdy),
+			.width  = grabc->geom.width  + (rzcorner & 1 ? cdx : -cdx),
+			.height = grabc->geom.height + (rzcorner & 2 ? cdy : -cdy)
+		};
+		resize(grabc, box, 1);
+
+		grabcx += cdx;
+		grabcy += cdy;
+
 		return;
 	}
 
@@ -2257,12 +2273,16 @@ moveresize(const Arg *arg)
 		wlr_cursor_set_xcursor(cursor, cursor_mgr, "all-scroll");
 		break;
 	case CurResize:
-		/* Doesn't work for X11 output - the next absolute motion event
-		 * returns the cursor to where it started */
-		wlr_cursor_warp_closest(cursor, NULL,
-				grabc->geom.x + grabc->geom.width,
-				grabc->geom.y + grabc->geom.height);
-		wlr_cursor_set_xcursor(cursor, cursor_mgr, "se-resize");
+		const char *cursors[] = { "nw-resize", "ne-resize", "sw-resize", "se-resize" };
+
+		grabcx = (int)round(cursor->x);
+		grabcy = (int)round(cursor->y);
+
+		/* identify the closest corner index */
+		rzcorner = (grabcx - grabc->geom.x < grabc->geom.x + grabc->geom.width  - grabcx ? 0 : 1)
+				 + (grabcy - grabc->geom.y < grabc->geom.y + grabc->geom.height - grabcy ? 0 : 2);
+
+		wlr_cursor_set_xcursor(cursor, cursor_mgr, cursors[rzcorner]);
 		break;
 	}
 }
