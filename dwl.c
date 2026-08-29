@@ -1334,7 +1334,8 @@ createpointer(struct wlr_pointer *pointer)
 			libinput_device_config_tap_set_button_map(device, button_map);
 		}
 
-		if (libinput_device_config_scroll_has_natural_scroll(device))
+		if (libinput_device_config_scroll_has_natural_scroll(device)
+				&& libinput_device_has_capability(device, LIBINPUT_DEVICE_CAP_GESTURE))
 			libinput_device_config_scroll_set_natural_scroll_enabled(device, natural_scrolling);
 
 		if (libinput_device_config_dwt_is_available(device))
