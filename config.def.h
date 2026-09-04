@@ -28,6 +28,7 @@ static int log_level = WLR_ERROR;
 
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
+	{}
 };
 
 /* layout(s) */
@@ -138,7 +139,7 @@ static const char *briup[] =   { "brightnessctl", "set", "+10%", NULL };
 static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
 
 static const Key keys[] = {
-	/* Note that Shift changes certain key codes: 2 -> at, etc. */
+	/* Note that Shift changes certain key codes. */
 	/* modifier                  key                  function          argument */
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       spawn,            {.v = launch} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           spawn,            {.v = power} },
@@ -165,6 +166,14 @@ static const Key keys[] = {
 	{ MODKEY,					 XKB_KEY_q,           killclient,       {0} },
 	{ MODKEY,					 XKB_KEY_t,			  togglefloating,   {0} },
 	{ MODKEY,                    XKB_KEY_f,           togglefullscreen, {0} },
+	{ MODKEY,                    XKB_KEY_Down,        moveresizekb,     {.v = (int []){ 0, 100, 0, 0 }}},
+	{ MODKEY,                    XKB_KEY_Up,          moveresizekb,     {.v = (int []){ 0, -100, 0, 0 }}},
+	{ MODKEY,                    XKB_KEY_Right,       moveresizekb,     {.v = (int []){ 100, 0, 0, 0 }}},
+	{ MODKEY,                    XKB_KEY_Left,        moveresizekb,     {.v = (int []){ -100, 0, 0, 0 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Down,        moveresizekb,     {.v = (int []){ 0, 0, 0, 100 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Up,          moveresizekb,     {.v = (int []){ 0, 0, 0, -100 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Right,       moveresizekb,     {.v = (int []){ 0, 0, 100, 0 }}},
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Left,        moveresizekb,     {.v = (int []){ 0, 0, -100, 0 }}},
 	{ MODKEY,                    XKB_KEY_0,           view,             {.ui = ~0} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_parenright,  tag,              {.ui = ~0} },
 	{ MODKEY,                    XKB_KEY_Return,      focusmon,         {.i = WLR_DIRECTION_LEFT} },
