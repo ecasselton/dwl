@@ -26,6 +26,9 @@ static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 /* logging */
 static int log_level = WLR_ERROR;
 
+/* passthrough */
+static int passthrough = 0;
+
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
 	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
@@ -189,6 +192,7 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                     6),
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
+	{ MODKEY,                    XKB_KEY_F9,          togglepassthrough, {0} },
 	{ 0,					     XKB_KEY_XF86AudioLowerVolume,  spawn,  {.v = voldown} },
 	{ 0,					     XKB_KEY_XF86AudioRaiseVolume,  spawn,  {.v = volup} },
 	{ 0,					     XKB_KEY_XF86AudioMute,	        spawn,	{.v = volmute} },
