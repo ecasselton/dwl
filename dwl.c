@@ -1826,7 +1826,7 @@ handlesig(int signo)
 void
 handlecursoractivity(void)
 {
-	if (!cursor_hidden)
+	if (!cursor_hidden || active_constraint)
 		return;
 
 	cursor_hidden = false;
