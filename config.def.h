@@ -119,18 +119,16 @@ static const int hide_cursor_when_typing = 1;
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-/* helper for defining wmenu scripts with pass-through args */
-#define WMENU(script) (const char*[]){ script, "-i", "-f", "Iosevka Nerd Font Propo 12", "-N", "111111", "-n", "988888", "-M", "111111", "-m", "ebdbc2", "-S", "ebdbc2", "-s", "111111", NULL }
 
 /* commands */
-static const char *launch[] =    WMENU("wmenu-run");
-static const char *power[] =     WMENU("wmenu-power");
-static const char *mount[] =     WMENU("wmenu-mount");
-static const char *bt[] =	     WMENU("wmenu-bt");
-static const char *emoji[] =     WMENU("wmenu-emoji");
-static const char *bitw[] =      WMENU("wmenu-bw");
-static const char *clipboard[] = WMENU("wmenu-clip");
-static const char *prtsc[] =     WMENU("wmenu-screenshot");
+static const char *launch[] =  { "wmenu-run", NULL };
+static const char *power[] =   { "wmenu-power", NULL };
+static const char *mount[] =   { "wmenu-mount", NULL };
+static const char *bt[] =	   { "wmenu-bt", NULL };
+static const char *emoji[] =   { "wmenu-emoji", NULL };
+static const char *bitw[] =    { "wmenu-bw", NULL };
+static const char *clipbd[] =  { "wmenu-clip", NULL };
+static const char *prtsc[] =   { "wmenu-screenshot", NULL };
 static const char *term[] =    { "foot", "tmux", NULL };
 static const char *browser[] = { "firefox", NULL };
 static const char *volup[]	 = { "volume", "up", NULL };
@@ -149,7 +147,7 @@ static const Key keys[] = {
 	{ MODKEY,					 XKB_KEY_period,      spawn,            {.v = emoji} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_p,			  spawn,            {.v = bitw} },
 	{ 0,						 XKB_KEY_Print,		  spawn,            {.v = prtsc} },
-	{ MODKEY,					 XKB_KEY_v,			  spawn,            {.v = clipboard} },
+	{ MODKEY,					 XKB_KEY_v,			  spawn,            {.v = clipbd} },
 	{ MODKEY,					 XKB_KEY_space,       spawn,            {.v = term} },
 	{ MODKEY,					 XKB_KEY_b,			  spawn,            {.v = browser} },
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
