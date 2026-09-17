@@ -2086,6 +2086,8 @@ mapnotify(struct wl_listener *listener, void *data)
 	if ((p = client_get_parent(c))) {
 		c->isfloating = 1;
 		setmon(c, p->mon, p->tags);
+		c->geom.x = p->geom.x + (p->geom.width - c->geom.width) / 2;
+		c->geom.y = p->geom.y + (p->geom.height - c->geom.height) / 2;
 	} else {
 		applyrules(c);
 	}
