@@ -2309,10 +2309,8 @@ moveresizekb(const Arg *arg)
 		return;
 	}
 
-	if(!(c->isfloating || m->lt[m->sellt]->arrange == NULL)){
-		return;
-	}
-
+	/* Float the window */
+	setfloating(c, 1);
 	resize(c, (struct wlr_box){
 		.x = c->geom.x + ((int *)arg->v)[0],
 		.y = c->geom.y + ((int *)arg->v)[1],
